@@ -5,6 +5,7 @@ services:
   web:
     build: .
     container_name: lamp_web_cal-front
+    restart: unless-stopped
     ports:
       - "88:80"
     volumes:
@@ -20,12 +21,13 @@ services:
   db:
     image: mysql:8.0
     container_name: lamp_mysql_cal-front
-    restart: always
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: lamp_password
+      MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: lamp_db
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin123
+      MYSQL_USER: lamp_admin
+      MYSQL_PASSWORD: lamp_password
     ports:
       - "3307:3306"
     volumes:
@@ -38,13 +40,13 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: lamp_phpmyadmin_cal-front
-    restart: always
+    restart: unless-stopped
     environment:
       PMA_HOST: db
-      PMA_PORT: 3307
+      PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+      PMA_PASSWORD: lamp_password
+      MYSQL_ROOT_PASSWORD: lamp_password
     ports:
       - "81:80"
     depends_on:
