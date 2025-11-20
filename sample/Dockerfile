@@ -31,6 +31,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # 作業ディレクトリを設定
 WORKDIR /var/www/html
 
+# www-dataユーザーに適切な権限を設定
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
 # Apacheを起動
 EXPOSE 80
 CMD ["apache2-foreground"]
